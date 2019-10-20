@@ -30,6 +30,7 @@ class Home extends Component {
 
     render() {
         const { products } = this.state;
+        const { amount } = this.props;
 
         return (
             <ProductList>
@@ -50,7 +51,7 @@ class Home extends Component {
                                     <MdAddShoppingCart
                                         size={16}
                                         color="#fff" />
-                                    3
+                                    {amount[product.id] || 0}
                                 </div>
                                 <span>
                                     Add to Cart
@@ -64,6 +65,13 @@ class Home extends Component {
     }
 }
 
-const mapdispatchToProps = dispatch => bindActionCreators(CartActions, dispatch);
+const mapStateToProps = state => ({
+    amount: state.cart.reduce((amount, product) => {
+        amount[product.id] = product.amount;
+        return amount;
+    }, {})
+});
 
-export default connect(null, mapdispatchToProps)(Home);
+const mapDispatchToProps = dispatch => bindActionCreators(CartActions, dispatch);
+
+export default connect(mapStateToProps, mapDispatchToProps)(Home);
