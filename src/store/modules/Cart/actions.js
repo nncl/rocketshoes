@@ -11,3 +11,11 @@ export function removeFromCart(id) {
         id
     }
 }
+
+export function updateCart(id, amount) {
+    return {
+        type: '@cart/UPDATE_CART',
+        id,
+        amount
+    }
+}
