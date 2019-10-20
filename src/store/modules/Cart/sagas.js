@@ -2,6 +2,7 @@ import { call, select, put, all, takeLatest } from 'redux-saga/effects';
 import { addToCartSuccess, updateCart } from './actions';
 import api from '../../../services/api';
 import { formatPrice } from '../../../utils/format';
+import { toast } from 'react-toastify';
 
 function* addToCart({ id }) {
     const productExists = yield select(
@@ -14,7 +15,7 @@ function* addToCart({ id }) {
     const amount = currentAmount + 1;
 
     if (amount > stockAmount) {
-        return console.tron.warn(`Error`);
+        return toast.error(`Quantity out of stock`);
     }
 
     if (productExists) {
