@@ -6,13 +6,13 @@ import { formatPrice } from '../../utils/format';
 import { MdRemoveCircleOutline, MdAddCircleOutline, MdDelete } from 'react-icons/md';
 import { Container, ProductTable, Total } from './styles';
 
-function Cart({ cart, total, removeFromCart, updateCart }) {
+function Cart({ cart, total, removeFromCart, updateAmountRequest }) {
     function increment(product) {
-        updateCart(product.id, product.amount + 1);
+        updateAmountRequest(product.id, product.amount + 1);
     }
 
     function decrement(product) {
-        updateCart(product.id, product.amount - 1);
+        updateAmountRequest(product.id, product.amount - 1);
     }
 
     return (
