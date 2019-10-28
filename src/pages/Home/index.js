@@ -1,14 +1,18 @@
 import React, { useState, useEffect } from 'react';
-import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
+import { useDispatch, useSelector } from 'react-redux';
 import * as CartActions from '../../store/modules/Cart/actions';
 import api from '../../services/api';
 import { formatPrice } from '../../utils/format';
 import { ProductList } from './styles';
 import { MdAddShoppingCart } from 'react-icons/md';
 
-function Home({ amount, addToCartRequest }) {
+export default function Home() {
     const [products, setProducts] = useState([]);
+    const amount = useSelector(state => state.cart.reduce((sumAmount, product) => {
+        sumAmount[product.id] = product.amount;
+        return sumAmount;
+    }, {}));
+    const dispatch = useDispatch();
 
     // Component did mount
     useEffect(() => {
@@ -27,7 +31,7 @@ function Home({ amount, addToCartRequest }) {
     }, []);
 
     function handleAddProduct(id) {
-        addToCartRequest(id);
+        dispatch(CartActions.addToCartRequest(id));
     }
 
     return (
@@ -61,14 +65,3 @@ function Home({ amount, addToCartRequest }) {
         </ProductList>
     );
 }
-
-const mapStateToProps = state => ({
-    amount: state.cart.reduce((amount, product) => {
-        amount[product.id] = product.amount;
-        return amount;
-    }, {})
-});
-
-const mapDispatchToProps = dispatch => bindActionCreators(CartActions, dispatch);
-
-export default connect(mapStateToProps, mapDispatchToProps)(Home);
